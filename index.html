@@ -127,7 +127,7 @@
                     return new Date(a.airdate) - new Date(b.airdate);
                 });
 
-                const rows = ["Show Name, Episode Number, Episode Name, Original Airdate"];
+                const rows = [["Show Name", "Episode Number", "Episode Name", "Original Airdate"]];
                 showsAndAirdates.forEach((x, i) => {
                     rows.push([x.showname, "Season " + x.season + ", Episode " + x.number, x.name, x.airdate]);
                 })
