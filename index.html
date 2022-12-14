@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font: 16px Arial;
+        }
+
+        /*the container must be positioned relative:*/
+        .autocomplete {
+            position: relative;
+            display: inline-block;
+        }
+
+        input {
+            border: 1px solid transparent;
+            background-color: #f1f1f1;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        input[type=text] {
+            background-color: #f1f1f1;
+            width: 100%;
+        }
+
+        input[type=submit] {
+            background-color: DodgerBlue;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .autocomplete-items {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-bottom: none;
+            border-top: none;
+            z-index: 99;
+            /*position the autocomplete items to be the same width as the container:*/
+            top: 100%;
+            left: 0;
+            right: 0;
+        }
+
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #fff;
+            border-bottom: 1px solid #d4d4d4;
+        }
+
+        .autocomplete-items div img {
+            display: block;
+        }
+
+        /*when hovering an item:*/
+        .autocomplete-items div:hover {
+            background-color: #e9e9e9;
+        }
+
+        /*when navigating through the items using the arrow keys:*/
+        .autocomplete-active {
+            background-color: DodgerBlue !important;
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Show Autocomplete</h2>
+
+    <p>Start typing:</p>
+
+    <form autocomplete="off" action="/action_page.php">
+        <div class="autocomplete" style="width:300px;">
+            <input id="showInput" type="text" placeholder="Parks and Recreation">
+            <input id="showID" type='hidden' value='-1'>
+            <input id="showImage" type='hidden' value="">
+        </div>
+    </form>
+
+    <button id="add">Add</button>
+
+    <ul class="list-group" id="showList"></ul>
+
+    <button id="generate" disabled>Generate list</button>
+    <button id="generateCSV" disabled>Generate CSV</button>
+    <div id="myDynamicTable"></div>
+
+    <script>
+        const addButton = document.getElementById('add');
+        const showInput = document.getElementById("showInput");
+        const showID = document.getElementById('showID');
+        const showImage = document.getElementById("showImage");
+        const generateButton = document.getElementById("generate");
+        const generateCSVButton = document.getElementById("generateCSV");
+        const showsAndData = []
+        let showsAndAirdates = []
+
+        generateCSVButton.addEventListener('click', () => {
+            showsAndAirdates = []
+            let promiseArr = []
+            showsAndData.forEach((x, i) => {
+                const getData = fetch('https://api.tvmaze.com/shows/' + x.id + '/episodes')
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data)
+                        data.forEach((y, i) => { y.showname = x.name })
+                        return data;
+                    })
+                promiseArr.push(getData)
+            });
+
+            Promise.all(promiseArr).then((res) => {
+                res.forEach((x, i) => {
+                    showsAndAirdates = showsAndAirdates.concat(x);
+                })
+
+                showsAndAirdates = showsAndAirdates.sort(function (a, b) {
+                    return new Date(a.airdate) - new Date(b.airdate);
+                });
+
+                const rows = ["Show Name, Episode Number, Episode Name, Original Airdate"];
+                showsAndAirdates.forEach((x, i) => {
+                    rows.push([x.showname, "Season " + x.season + ", Episode " + x.number, x.name, x.airdate]);
+                })
+
+                let csvContent = "data:text/csv;charset=utf-8,"
+                    + rows.map(e => e.join(",")).join("\n");
+
+                var encodedUri = encodeURI(csvContent);
+                var link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "watchlist.csv");
+                document.body.appendChild(link); // Required for FF
+
+                link.click();
+            })
+        })
+
+        generateButton.addEventListener('click', () => {
+            showsAndAirdates = []
+            let promiseArr = []
+            showsAndData.forEach((x, i) => {
+                const getData = fetch('https://api.tvmaze.com/shows/' + x.id + '/episodes')
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data)
+                        data.forEach((y, i) => { y.showname = x.name })
+                        return data;
+                    })
+                promiseArr.push(getData)
+            });
+
+            Promise.all(promiseArr).then((res) => {
+                res.forEach((x, i) => {
+                    showsAndAirdates = showsAndAirdates.concat(x);
+                })
+
+                showsAndAirdates = showsAndAirdates.sort(function (a, b) {
+                    return new Date(a.airdate) - new Date(b.airdate);
+                });
+
+                var myTableDiv = document.getElementById("myDynamicTable");
+                var table = document.createElement('TABLE');
+                table.border = '1';
+
+                var tableBody = document.createElement('TBODY');
+                table.appendChild(tableBody);
+
+                var tr = document.createElement('TR');
+                tableBody.appendChild(tr);
+                var td = document.createElement('TH');
+                td.width = '75';
+                td.appendChild(document.createTextNode("Show Name"));
+                tr.appendChild(td);
+
+                var td = document.createElement('TH');
+                td.width = '75';
+                td.appendChild(document.createTextNode("Episode Number"));
+                tr.appendChild(td);
+
+                var td = document.createElement('TH');
+                td.width = '75';
+                td.appendChild(document.createTextNode("Episode Name"));
+                tr.appendChild(td);
+
+                var td = document.createElement('TH');
+                td.width = '75';
+                td.appendChild(document.createTextNode("Original Airdate"));
+                tr.appendChild(td);
+
+                for (let i = 0; i < showsAndAirdates.length; i++) {
+                    var tr = document.createElement('TR');
+                    tableBody.appendChild(tr);
+
+                    var td = document.createElement('TD');
+                    td.width = '75';
+                    td.appendChild(document.createTextNode(showsAndAirdates[i].showname));
+                    tr.appendChild(td);
+
+                    var td = document.createElement('TD');
+                    td.width = '75';
+                    td.appendChild(document.createTextNode(showsAndAirdates[i].season + "-" + showsAndAirdates[i].number));
+                    tr.appendChild(td);
+
+                    var td = document.createElement('TD');
+                    td.width = '75';
+                    td.appendChild(document.createTextNode(showsAndAirdates[i].name));
+                    tr.appendChild(td);
+
+                    var td = document.createElement('TD');
+                    td.width = '75';
+                    td.appendChild(document.createTextNode(showsAndAirdates[i].airdate));
+                    tr.appendChild(td);
+                }
+                myTableDiv.appendChild(table);
+            })
+        })
+
+        addButton.addEventListener('click', () => {
+            if (showID.value != -1) {
+                if (showsAndData.filter(e => e.id === parseInt(showID.value)).length == 0) {
+                    showsAndData.push({
+                        "name": showInput.value,
+                        "image": showImage.value,
+                        "id": parseInt(showID.value)
+                    });
+
+                    const myItem = showInput.value;
+                    let list = document.getElementById('showList');
+
+                    const listItem = document.createElement('li');
+                    const listText = document.createElement('span');
+                    const listImage = document.createElement('img');
+                    listItem.classList.add("list-group-item");
+                    listText.textContent = myItem;
+                    listImage.src = showImage.value;
+                    listImage.style = "display: block"
+                    listItem.appendChild(listText);
+                    listItem.appendChild(listImage);
+                    list.appendChild(listItem);
+
+                    generateButton.disabled = false;
+                    generateCSVButton.disabled = false;
+                } else {
+                    alert("You've already added this show")
+                }
+
+                showInput.value = "";
+                showID.value = '-1';
+                showID.value = ""
+            }
+        })
+
+        function autocomplete() {
+            var shows = [];
+            /*the autocomplete function takes two arguments,
+            the text field element and an array of possible autocompleted values:*/
+            var currentFocus;
+            /*execute a function when someone writes in the text field:*/
+            showInput.addEventListener("input", function (e) {
+                var a, b, i, val = this.value;
+
+                const Http = new XMLHttpRequest();
+                const url = 'https://api.tvmaze.com/search/shows?q=' + val.replace(/\s/g, '+');
+                Http.open("GET", url);
+                Http.send();
+
+                Http.onreadystatechange = (event) => {
+                    if (Http.responseText) {
+                        arr = JSON.parse(Http.responseText)
+                        /*close any already open lists of autocompleted values*/
+                        closeAllLists();
+                        if (!val) { return false; }
+                        currentFocus = -1;
+                        /*create a DIV element that will contain the items (values):*/
+                        a = document.createElement("DIV");
+                        a.setAttribute("id", this.id + "autocomplete-list");
+                        a.setAttribute("class", "autocomplete-items");
+                        /*append the DIV element as a child of the autocomplete container:*/
+                        this.parentNode.appendChild(a);
+                        /*for each item in the array...*/
+                        for (i = 0; i < arr.length; i++) {
+                            /*create a DIV element for each matching element:*/
+                            b = document.createElement("div");
+                            /*make the matching letters bold:*/
+                            b.innerHTML = arr[i].show.name
+                            b.innerHTML += "<img src=\"" + arr[i].show.image.medium + "\">"
+                            /*insert a input field that will hold the current array item's value:*/
+                            b.innerHTML += "<input type='hidden' value='" + arr[i].show.name + "'>";
+                            b.innerHTML += "<input type='hidden' value='" + arr[i].show.id + "'>";
+                            b.innerHTML += "<input type='hidden' value='" + arr[i].show.image.medium + "'>";
+                            /*execute a function when someone clicks on the item value (DIV element):*/
+                            b.addEventListener("click", function (e) {
+                                /*insert the value for the autocomplete text field:*/
+                                showInput.value = this.getElementsByTagName("input")[0].value;
+                                showID.value = this.getElementsByTagName("input")[1].value;
+                                showImage.value = this.getElementsByTagName("input")[2].value;
+                                /*close the list of autocompleted values,
+                                (or any other open lists of autocompleted values:*/
+                                closeAllLists();
+                            });
+                            a.appendChild(b);
+                        }
+                    }
+                }
+            });
+
+            /*execute a function presses a key on the keyboard:*/
+            showInput.addEventListener("keydown", function (e) {
+                var x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("div");
+                if (e.keyCode == 40) {
+                    /*If the arrow DOWN key is pressed,
+                    increase the currentFocus variable:*/
+                    currentFocus++;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 38) { //up
+                    /*If the arrow UP key is pressed,
+                    decrease the currentFocus variable:*/
+                    currentFocus--;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 13) {
+                    /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                        /*and simulate a click on the "active" item:*/
+                        if (x) x[currentFocus].click();
+                    }
+                } else if (showID.value != -1) {
+                    showID.value = -1;
+                    showImage.value = "";
+                }
+            });
+
+            function addActive(x) {
+                /*a function to classify an item as "active":*/
+                if (!x) return false;
+                /*start by removing the "active" class on all items:*/
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                /*add class "autocomplete-active":*/
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+
+            function removeActive(x) {
+                /*a function to remove the "active" class from all autocomplete items:*/
+                for (var i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                }
+            }
+
+            function closeAllLists(elmnt) {
+                /*close all autocomplete lists in the document,
+                except the one passed as an argument:*/
+                var x = document.getElementsByClassName("autocomplete-items");
+                for (var i = 0; i < x.length; i++) {
+                    if (elmnt != x[i] && elmnt != showInput) {
+                        x[i].parentNode.removeChild(x[i]);
+                    }
+                }
+            }
+
+            /*execute a function when someone clicks in the document:*/
+            document.addEventListener("click", function (e) {
+                closeAllLists(e.target);
+            });
+        }
+
+        /*initiate the autocomplete function on the "showInput" element, and pass along the shows array as possible autocomplete values:*/
+        autocomplete();
+    </script>
+
+</body>
+
+</html>
