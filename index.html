@@ -129,7 +129,7 @@
 
                 const rows = [["Show Name", "Episode Number", "Episode Name", "Original Airdate"]];
                 showsAndAirdates.forEach((x, i) => {
-                    rows.push([x.showname, "Season " + x.season + ", Episode " + x.number, x.name, x.airdate]);
+                    rows.push([x.showname, "Season " + x.season + ": Episode " + x.number, x.name, x.airdate]);
                 })
 
                 let csvContent = "data:text/csv;charset=utf-8,"
