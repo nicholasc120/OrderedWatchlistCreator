@@ -3,6 +3,16 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./Images/favicon.png" type="image/x-icon" />
+    <meta charset="utf-8">
+    <title>Ordered Watchlist Creator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -21,7 +31,6 @@
         input {
             border: 1px solid transparent;
             background-color: #f1f1f1;
-            padding: 10px;
             font-size: 16px;
         }
 
@@ -42,7 +51,6 @@
             border-bottom: none;
             border-top: none;
             z-index: 99;
-            /*position the autocomplete items to be the same width as the container:*/
             top: 100%;
             left: 0;
             right: 0;
@@ -53,10 +61,12 @@
             cursor: pointer;
             background-color: #fff;
             border-bottom: 1px solid #d4d4d4;
+            text-align: center;
         }
 
         .autocomplete-items div img {
-            display: block;
+            display: flex;
+            justify-content: center;
         }
 
         /*when hovering an item:*/
@@ -69,31 +79,119 @@
             background-color: DodgerBlue !important;
             color: #ffffff;
         }
+
+        h1,
+        h2 {
+            font-family: 'Bebas Neue', cursive;
+        }
+
+        body {
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #181818;
+            font-family: 'Anton', sans-serif;
+        }
+
+        .content {
+            position: absolute;
+            height: 100%;
+            width: 70%;
+            background-color: #70ff5d;
+            border-style: inset;
+            overflow-y: auto;
+        }
+
+        .body-content {
+            margin: 10% 12% 10%;
+        }
     </style>
 </head>
 
 <body>
+    <div class="content">
+        <div class="body-content">
+            <h1 class="text-center">Ordered TV Watchlist Creator</h1>
+            <p class="text-center">Having trouble switching between different shows? <a
+                    href="https://nicholasc120.github.io/NetworkTVSimulator/everythingElse.html">click here</a> for
+                another app that will switch between them automatically</p>
+            <p>
+                To use this App, just search for the shows you want to watch and press the "Add" button. When you're
+                ready, click "Generate list" to generate your ordered watchlist. If you've forgotten to add a show, you
+                can add it after a list is generated, and then click "Generate list" again. If you add a show by
+                accident, start over by refreshing the page. Click on "Generate CSV" to download a Microsoft Excel
+                compatible file you can use to mark off which episodes you have and haven't
+                seen yet.
+            </p>
+            <p>
+                It does not matter what order you add the shows.
+            </p>
+            <p> Be sure to type out a show's name fully before deciding that it's not able to be found. </p>
+            <h2 class="text-center">Add New Show (Autocomplete)</h2>
+            <form autocomplete="off">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="showInput">Start typing:</label>
+                    <div class="autocomplete col-sm-10" style="width:300px;">
+                        <div class="input-group mb-3">
+                            <input id="showInput" class="form-control" type="text" placeholder="Parks and Recreation">
+                            <div class="input-group-append">
+                                <button type="button" id="add" class="btn btn-primary">Add</button>
+                            </div>
+                        </div>
+                        <input id="showID" type='hidden' value='-1'>
+                        <input id="showImage" type='hidden' value="">
+                    </div>
 
-    <h2>Show Autocomplete</h2>
-
-    <p>Start typing:</p>
-
-    <form autocomplete="off" action="/action_page.php">
-        <div class="autocomplete" style="width:300px;">
-            <input id="showInput" type="text" placeholder="Parks and Recreation">
-            <input id="showID" type='hidden' value='-1'>
-            <input id="showImage" type='hidden' value="">
+                </div>
+            </form>
+            <br>
+            <ul class="list-group" id="showList"></ul>
+            <div class="container">
+                <div class="col-md-12 text-center">
+                    <button id="generate" disabled class="btn btn-success">Generate list</button>
+                    <button id="generateCSV" disabled class="btn btn-danger">Generate CSV</button>
+                </div>
+            </div>
+            <div id="myDynamicTable"></div>
+            <h2>Explanation</h2>
+            <p>
+                So when I first got Disney+ I wanted to rewatch all the sitcoms I watched growing up, starting with but
+                not limited to <i>That's So Raven</i>, <i>The Suite Life of Zack and Cody</i>, <i>Hannah Montana</i>,
+                and <i>Wizards of Waverly Place</i>. I started watching those shows in rotation, one after the other,
+                but the problem is that none of these shows started airing at the same time. So when the <i>That's So
+                    Suite Life of Hannah Montana</i> crossover episode happened, it happened out of sync. Completely
+                killed my immersion. In addition, Season 4 of <i>Good Luck Charlie</i> starts off with Amy pregnant
+                again, and I was all like, "when did this happen??" because I didn't have the Disney Channel original
+                movies in the rotation as well.
+            </p>
+            <p>
+                So eventually I wanted to try it all again and wanted to create a watchlist that included all the shows
+                I care about and every Disney Channel original movie that aired during that time. I copied all the data
+                from random tables on the internet and compiled it all into a spreadsheet. It took about an hour, but it
+                was worth it to accurately experience the decade of TV I was familiar with. It was the <b>definitive</b>
+                way to enjoy all of these shows.
+            </p>
+            <p>
+                Then I realized that this idea could be extended and automated for <i>any</i> show, not just for the
+                ones on Disney Channel.
+            </p>
+            <p>
+                Think about the <a href="https://en.wikipedia.org/wiki/Arrowverse">Arrowverse</a>, spanning over 6
+                different shows that aired simultaneously for over a decade, crossing over with three
+                shows set in a different universe. If you watched all these
+                shows without knowing the order they aired in, it would be a nightmare. With this app, it will figure
+                out the order for you, and you can download a spreadsheet to track what you have and haven't seen yet.
+            </p>
+            <p>
+                Or what if you wanted to watch all of <a href="https://www.imdb.com/name/nm1321658/">Michael Shur's</a>
+                sitcoms? Could you imagine the tonal whiplash between Season 1 of <i>The Office</i> and Season 1 of
+                <i>The Good Place</i>? <i>The Office</i> started airing in 2005, and <i>The Good Place</i> started in
+                2016. Despite both premiering on NBC, the landscape of network television had changed completely between
+                those two shows. You need to watch these shows in the right order to see the gradual transition over
+                time.
+            </p>
         </div>
-    </form>
-
-    <button id="add">Add</button>
-
-    <ul class="list-group" id="showList"></ul>
-
-    <button id="generate" disabled>Generate list</button>
-    <button id="generateCSV" disabled>Generate CSV</button>
-    <div id="myDynamicTable"></div>
-
+    </div>
     <script>
         const addButton = document.getElementById('add');
         const showInput = document.getElementById("showInput");
@@ -245,7 +343,6 @@
                     listItem.classList.add("list-group-item");
                     listText.textContent = myItem;
                     listImage.src = showImage.value;
-                    listImage.style = "display: block"
                     listItem.appendChild(listText);
                     listItem.appendChild(listImage);
                     list.appendChild(listItem);
