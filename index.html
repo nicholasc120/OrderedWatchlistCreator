@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./Images/favicon.png" type="image/x-icon" />
+    <link rel="icon" href="./images/favicon.png" type="image/x-icon" />
     <meta charset="utf-8">
     <title>Ordered Watchlist Creator</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -12,14 +12,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
-        }
-
-        body {
-            font: 16px Arial;
         }
 
         /*the container must be positioned relative:*/
@@ -61,12 +57,19 @@
             cursor: pointer;
             background-color: #fff;
             border-bottom: 1px solid #d4d4d4;
-            text-align: center;
+
+            display: flex;
+            align-items: center;
+            justify-content: center
         }
 
         .autocomplete-items div img {
-            display: flex;
-            justify-content: center;
+            padding-left: 20%;
+            width: 45%;
+        }
+
+        .autocomplete-items div p {
+            font-size: 30px;
         }
 
         /*when hovering an item:*/
@@ -80,6 +83,21 @@
             color: #ffffff;
         }
 
+        li div {
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        li div img {
+            padding-left: 20%;
+            width: 45%;
+        }
+
+        li div p {
+            font-size: 30px;
+        }
+
         h1,
         h2 {
             font-family: 'Bebas Neue', cursive;
@@ -90,14 +108,14 @@
             margin-left: auto;
             margin-right: auto;
             background-color: #181818;
-            font-family: 'Anton', sans-serif;
+            font-family: 'Arvo', serif;
         }
 
         .content {
             position: absolute;
             height: 100%;
             width: 70%;
-            background-color: #70ff5d;
+            background-color: #77ad70;
             border-style: inset;
             overflow-y: auto;
         }
@@ -112,8 +130,9 @@
     <div class="content">
         <div class="body-content">
             <h1 class="text-center">Ordered TV Watchlist Creator</h1>
-            <p class="text-center">Having trouble switching between different shows? <a
-                    href="https://nicholasc120.github.io/NetworkTVSimulator/everythingElse.html">click here</a> for
+            <p style="background-color: rgb(238, 255, 161);" class="text-center">Having trouble switching between
+                different shows? <a href="https://nicholasc120.github.io/NetworkTVSimulator/everythingElse.html">Click
+                    here</a> for
                 another app that will switch between them automatically</p>
             <p>
                 To use this App, just search for the shows you want to watch and press the "Add" button. When you're
@@ -144,7 +163,6 @@
 
                 </div>
             </form>
-            <br>
             <ul class="list-group" id="showList"></ul>
             <div class="container">
                 <div class="col-md-12 text-center">
@@ -152,24 +170,37 @@
                     <button id="generateCSV" disabled class="btn btn-danger">Generate CSV</button>
                 </div>
             </div>
-            <div id="myDynamicTable"></div>
-            <h2>Explanation</h2>
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <table id="myDynamicTable" class="table table-striped text-center">
+                    </table>
+                </div>
+            </div>
+            <h2>Backstory</h2>
             <p>
-                So when I first got Disney+ I wanted to rewatch all the sitcoms I watched growing up, starting with but
-                not limited to <i>That's So Raven</i>, <i>The Suite Life of Zack and Cody</i>, <i>Hannah Montana</i>,
-                and <i>Wizards of Waverly Place</i>. I started watching those shows in rotation, one after the other,
-                but the problem is that none of these shows started airing at the same time. So when the <i>That's So
+                So when I first got Disney+ I wanted to rewatch all the sitcoms I watched growing up, starting with
+                but
+                not limited to <i>That's So Raven</i>, <i>The Suite Life of Zack and Cody</i>, <i>Hannah
+                    Montana</i>,
+                and <i>Wizards of Waverly Place</i>. I started watching those shows in rotation, one after the
+                other,
+                but the problem is that none of these shows started airing at the same time. So when the <i>That's
+                    so
                     Suite Life of Hannah Montana</i> crossover episode happened, it happened out of sync. Completely
                 killed my immersion. In addition, Season 4 of <i>Good Luck Charlie</i> starts off with Amy pregnant
-                again, and I was all like, "when did this happen??" because I didn't have the Disney Channel original
+                again, and I was all like, "when did this happen??" because I didn't have the Disney Channel
+                original
                 movies in the rotation as well.
             </p>
             <p>
-                So eventually I wanted to try it all again and wanted to create a watchlist that included all the shows
-                I care about and every Disney Channel original movie that aired during that time. I copied all the data
-                from random tables on the internet and compiled it all into a spreadsheet. It took about an hour, but it
-                was worth it to accurately experience the decade of TV I was familiar with. It was the <b>definitive</b>
-                way to enjoy all of these shows.
+                So eventually I wanted to try it all again and wanted to create a watchlist that included all the
+                shows
+                I care about and every Disney Channel original movie that aired during that time. I copied the original
+                airdates of every original movie and show that aired on Disney Channel from random tables on the
+                internet and compiled it all into a spreadsheet. Then, I picked out the shows and movies I cared
+                about (so everything except <i>Sonny With a Chance</i>) and sorted them by their original airdate. It
+                took about an hour, but it was worth it to accurately experience the decade of TV I was familiar with.
+                It was the <b>definitive</b> way to enjoy all of these shows.
             </p>
             <p>
                 Then I realized that this idea could be extended and automated for <i>any</i> show, not just for the
@@ -179,16 +210,30 @@
                 Think about the <a href="https://en.wikipedia.org/wiki/Arrowverse">Arrowverse</a>, spanning over 6
                 different shows that aired simultaneously for over a decade, crossing over with three
                 shows set in a different universe. If you watched all these
-                shows without knowing the order they aired in, it would be a nightmare. With this app, it will figure
-                out the order for you, and you can download a spreadsheet to track what you have and haven't seen yet.
+                shows without knowing the order they aired in, it would be a nightmare. With this app, it will
+                figure
+                out the order for you, and you can download a spreadsheet to track what you have and haven't seen
+                yet.
             </p>
             <p>
-                Or what if you wanted to watch all of <a href="https://www.imdb.com/name/nm1321658/">Michael Shur's</a>
+                Or what if you wanted to watch all of <a href="https://www.imdb.com/name/nm1321658/">Michael
+                    Shur's</a>
                 sitcoms? Could you imagine the tonal whiplash between Season 1 of <i>The Office</i> and Season 1 of
-                <i>The Good Place</i>? <i>The Office</i> started airing in 2005, and <i>The Good Place</i> started in
-                2016. Despite both premiering on NBC, the landscape of network television had changed completely between
+                <i>The Good Place</i>? <i>The Office</i> started airing in 2005, and <i>The Good Place</i> started
+                in
+                2016. Despite both premiering on NBC, the landscape of network television had changed completely
+                between
                 those two shows. You need to watch these shows in the right order to see the gradual transition over
-                time.
+                time. Plus, if you throw in <i>New Girl</i>, you get to see the crossovers between it and
+                <i>Brooklyn
+                    Nine-Nine</i> together.
+            </p>
+            <p>
+                Even procedurals like <i>9-1-1</i> and <i>9-1-1 Lone Star</i>, or <i>NCIS:LA</i> and <i>Hawaii
+                    Five-O</i> are greatly enhanced when watched in the right order. Network television was meant to be
+                syndicated, not binged. Online streaming services like Netflix that are built around binging multiple
+                episodes of a single show are broken that way. Honestly they've kind of ruined the way viewers watch TV,
+                but that's a whole other thing. Anyway, go nuts.
             </p>
         </div>
     </div>
@@ -266,62 +311,67 @@
                     return new Date(a.airdate) - new Date(b.airdate);
                 });
 
-                var myTableDiv = document.getElementById("myDynamicTable");
-                myTableDiv.innerHTML = ""
+                var myTable = document.getElementById("myDynamicTable");
+                myTable.innerHTML = ""
 
-                var table = document.createElement('TABLE');
-                table.border = '1';
+                var tr = document.createElement('thead');
+                tr.className = "thead-dark"
+                myTable.appendChild(tr);
 
-                var tableBody = document.createElement('TBODY');
-                table.appendChild(tableBody);
-
-                var tr = document.createElement('TR');
-                tableBody.appendChild(tr);
-                var td = document.createElement('TH');
-                td.width = '75';
+                var td = document.createElement('th');
+                td.width = '25%'
                 td.appendChild(document.createTextNode("Show Name"));
                 tr.appendChild(td);
 
-                var td = document.createElement('TH');
-                td.width = '75';
+                var td = document.createElement('th');
+                td.width = '25%'
                 td.appendChild(document.createTextNode("Episode Number"));
                 tr.appendChild(td);
 
-                var td = document.createElement('TH');
-                td.width = '75';
+                var td = document.createElement('th');
+                td.width = '25%'
                 td.appendChild(document.createTextNode("Episode Name"));
                 tr.appendChild(td);
 
-                var td = document.createElement('TH');
-                td.width = '75';
+                var td = document.createElement('th');
+                td.width = '25%'
                 td.appendChild(document.createTextNode("Original Airdate"));
                 tr.appendChild(td);
+
+                var td = document.createElement('th');
+                td.width = '25%'
+                tr.appendChild(td);
+
+                var tableBody = document.createElement('TBODY');
 
                 for (let i = 0; i < showsAndAirdates.length; i++) {
                     var tr = document.createElement('TR');
                     tableBody.appendChild(tr);
 
                     var td = document.createElement('TD');
-                    td.width = '75';
                     td.appendChild(document.createTextNode(showsAndAirdates[i].showname));
                     tr.appendChild(td);
 
                     var td = document.createElement('TD');
-                    td.width = '75';
                     td.appendChild(document.createTextNode(showsAndAirdates[i].season + "-" + showsAndAirdates[i].number));
                     tr.appendChild(td);
 
                     var td = document.createElement('TD');
-                    td.width = '75';
                     td.appendChild(document.createTextNode(showsAndAirdates[i].name));
                     tr.appendChild(td);
 
                     var td = document.createElement('TD');
-                    td.width = '75';
                     td.appendChild(document.createTextNode(showsAndAirdates[i].airdate));
                     tr.appendChild(td);
+
+                    var td = document.createElement('TD');
+                    var checkbox = document.createElement('input')
+                    checkbox.className = "form-check-input"
+                    checkbox.type = "checkbox"
+                    td.appendChild(checkbox);
+                    tr.appendChild(td);
                 }
-                myTableDiv.appendChild(table);
+                myTable.appendChild(tableBody);
             })
         })
 
@@ -338,13 +388,17 @@
                     let list = document.getElementById('showList');
 
                     const listItem = document.createElement('li');
-                    const listText = document.createElement('span');
+                    const listText = document.createElement('p');
                     const listImage = document.createElement('img');
+
+                    const listDiv = document.createElement('div');
+
                     listItem.classList.add("list-group-item");
                     listText.textContent = myItem;
                     listImage.src = showImage.value;
-                    listItem.appendChild(listText);
-                    listItem.appendChild(listImage);
+                    listDiv.appendChild(listText);
+                    listDiv.appendChild(listImage);
+                    listItem.appendChild(listDiv)
                     list.appendChild(listItem);
 
                     generateButton.disabled = false;
@@ -391,7 +445,7 @@
                             /*create a DIV element for each matching element:*/
                             b = document.createElement("div");
                             /*make the matching letters bold:*/
-                            b.innerHTML = arr[i].show.name
+                            b.innerHTML = "<p>" + arr[i].show.name + "</p>"
                             b.innerHTML += "<img src=\"" + arr[i].show.image.medium + "\">"
                             /*insert a input field that will hold the current array item's value:*/
                             b.innerHTML += "<input type='hidden' value='" + arr[i].show.name + "'>";
