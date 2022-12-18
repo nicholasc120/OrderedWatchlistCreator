@@ -103,25 +103,48 @@
             font-family: 'Bebas Neue', cursive;
         }
 
-        body {
-            width: 70%;
-            margin-left: auto;
-            margin-right: auto;
-            background-color: #181818;
-            font-family: 'Arvo', serif;
+        @media (max-width: 800px) {
+            body {
+                margin-left: auto;
+                margin-right: auto;
+                background-color: #181818;
+                font-family: 'Arvo', serif;
+            }
+
+            .content {
+                position: absolute;
+                height: 100%;
+                background-color: #77ad70;
+                border-style: inset;
+                overflow-y: auto;
+            }
+
+            .body-content {
+                margin: 10% 12% 10%;
+            }
         }
 
-        .content {
-            position: absolute;
-            height: 100%;
-            width: 70%;
-            background-color: #77ad70;
-            border-style: inset;
-            overflow-y: auto;
-        }
+        @media (min-width: 800px) {
+            body {
+                width: 70%;
+                margin-left: auto;
+                margin-right: auto;
+                background-color: #181818;
+                font-family: 'Arvo', serif;
+            }
 
-        .body-content {
-            margin: 10% 12% 10%;
+            .content {
+                position: absolute;
+                height: 100%;
+                width: 70%;
+                background-color: #77ad70;
+                border-style: inset;
+                overflow-y: auto;
+            }
+
+            .body-content {
+                margin: 10% 12% 10%;
+            }
         }
     </style>
 </head>
