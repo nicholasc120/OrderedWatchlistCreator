@@ -295,7 +295,7 @@
 
                 const rows = [["Show Name", "Episode Number", "Episode Name", "Original Airdate"]];
                 showsAndAirdates.forEach((x, i) => {
-                    rows.push([x.showname, "Season " + x.season + ": Episode " + x.number, x.name, x.airdate]);
+                    rows.push(['"' + x.showname + '"', "Season " + x.season + ": Episode " + x.number, '"' + x.name + '"', x.airdate]);
                 })
 
                 let csvContent = "data:text/csv;charset=utf-8,"
@@ -471,9 +471,9 @@
                             b.innerHTML = "<p>" + arr[i].show.name + "</p>"
                             b.innerHTML += "<img src=\"" + arr[i].show.image.medium + "\">"
                             /*insert a input field that will hold the current array item's value:*/
-                            b.innerHTML += "<input type='hidden' value='" + arr[i].show.name + "'>";
-                            b.innerHTML += "<input type='hidden' value='" + arr[i].show.id + "'>";
-                            b.innerHTML += "<input type='hidden' value='" + arr[i].show.image.medium + "'>";
+                            b.innerHTML += "<input type='hidden' value=\"" + arr[i].show.name + "\">";
+                            b.innerHTML += "<input type='hidden' value=\"" + arr[i].show.id + "\">";
+                            b.innerHTML += "<input type='hidden' value=\"" + arr[i].show.image.medium + "\">";
                             /*execute a function when someone clicks on the item value (DIV element):*/
                             b.addEventListener("click", function (e) {
                                 /*insert the value for the autocomplete text field:*/
